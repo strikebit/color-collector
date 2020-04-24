@@ -4,33 +4,35 @@ public class GravitySwitch : MonoBehaviour
     public Controller control;
     public AudioSource sound;
     public float change;
-    private float rotation;
     public bool started;
+    //private float rot;
     void Start()
     {
         sound.Stop();
     }
     void Update()
     {
-        if(control.collided)
+        if (control.collided)
         {
-            if(started)
+            if (started)
             {
-                rotation = 0;
                 started = false;
                 sound.Play();
             }
-            if(rotation<control.rotateTo)
+            if (control.rotateTo > transform.eulerAngles.z)
             {
-                rotation += change;
-            } else if(rotation>control.rotateTo)
-            {
-                rotation -= change;
-            } else
+                //rot += change;
+                transform.RotateAround(control.transform.position, Vector3.forward, change);
+            }
+            else
             {
                 control.collided = false;
             }
-            transform.rotation = Quaternion.Euler(0, 0, rotation);
+            if (transform.eulerAngles.z > 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - 360);
+            }
+            //transform.rotation = Quaternion.Euler(0, 0, rot);
         }
     }
 }

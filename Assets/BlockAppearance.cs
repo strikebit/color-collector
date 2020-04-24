@@ -2,10 +2,18 @@
 public class BlockAppearance : MonoBehaviour
 {
     public FloatingOrb orb;
+    public FloatingOrb secondOrb;
+    public FloatingOrb thirdOrb;
+    public bool secondary;
+    public bool white;
     private MeshRenderer render;
     private Collider collide;
     void Start()
     {
+        if(white)
+        {
+            secondary = false;
+        }
         render = GetComponent<MeshRenderer>();
         if(GetComponent<SphereCollider>() != null)
         {
@@ -17,14 +25,43 @@ public class BlockAppearance : MonoBehaviour
     }
     void Update()
     {
-        if(orb.collected)
+        if (white)
         {
-            render.enabled = true;
-            collide.enabled = true;
-        } else
+            if (orb.collected && secondOrb.collected && thirdOrb.collected)
+            {
+                render.enabled = true;
+                collide.enabled = true;
+            }
+            else
+            {
+                render.enabled = false;
+                collide.enabled = false;
+            }
+        } else if (secondary)
         {
-            render.enabled = false;
-            collide.enabled = false;
+            if (orb.collected && secondOrb.collected)
+            {
+                render.enabled = true;
+                collide.enabled = true;
+            }
+            else
+            {
+                render.enabled = false;
+                collide.enabled = false;
+            }
+        }
+        else
+        {
+            if (orb.collected)
+            {
+                render.enabled = true;
+                collide.enabled = true;
+            }
+            else
+            {
+                render.enabled = false;
+                collide.enabled = false;
+            }
         }
     }
 }

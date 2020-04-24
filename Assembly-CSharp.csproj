@@ -63,7 +63,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\BackGroundChange.cs" />
     <Compile Include="Assets\BackgroundCreation.cs" />
+    <Compile Include="Assets\BlackHole.cs" />
+    <Compile Include="Assets\BlackOrb.cs" />
     <Compile Include="Assets\BlockAppearance.cs" />
     <Compile Include="Assets\ColorShift.cs" />
     <Compile Include="Assets\Controller.cs" />
@@ -73,11 +76,14 @@
     <Compile Include="Assets\duplicator.cs" />
     <Compile Include="Assets\EnemyAI.cs" />
     <Compile Include="Assets\FloatingOrb.cs" />
+    <Compile Include="Assets\FlyingEnemy.cs" />
     <Compile Include="Assets\GravitySwitch.cs" />
     <Compile Include="Assets\LevelBuilder.cs" />
     <Compile Include="Assets\RainbowMat.cs" />
     <Compile Include="Assets\RainbowText.cs" />
     <Compile Include="Assets\RotationManagement.cs" />
+    <Compile Include="Assets\SeparatingOrb.cs" />
+    <Compile Include="Assets\SpinningBlades.cs" />
     <Compile Include="Assets\StartPosition.cs" />
     <Compile Include="Assets\WhiteOrb.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">

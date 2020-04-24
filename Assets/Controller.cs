@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 public class Controller : MonoBehaviour
 {
+    public float change;
+    public AudioSource fall;
     public AudioSource jumpSound;
     public AudioSource win;
     public AudioSource hurt;
@@ -19,18 +21,17 @@ public class Controller : MonoBehaviour
     public RainbowMat rainbow;
     public ColorShift shift;
     public UnityEngine.UI.Text text;
-    private float sizeSpeed = 0.2f;
-    private float size;
     private bool down;
     private int jumps = 1;
     private bool jumpable;
     private Rigidbody rb;
     private float height = 1;
     private bool up;
-    private bool finished;
     private bool started;
+    private float visiblilty;
     void Start()
     {
+        quad.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
         rb = GetComponent<Rigidbody>();
         jumpSound.Stop();
         win.Stop();
@@ -39,6 +40,10 @@ public class Controller : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (rb.velocity.magnitude > 10)
+        {
+            rb.velocity = rb.velocity.normalized * 10;
+        }
         transform.localScale = new Vector3(transform.localScale.x, height, transform.localScale.z);
         if(up)
         {
@@ -61,11 +66,11 @@ public class Controller : MonoBehaviour
         }
         if (active)
         {
-            if(transform.position.y<-30||transform.position.y>60)
+            if(transform.position.y<-30)
             {
                 active = false;
                 down = false;
-                hurt.Play();
+                fall.Play();
             }
             if (Input.GetKey("d"))
             {
@@ -74,6 +79,12 @@ public class Controller : MonoBehaviour
             if (Input.GetKey("a"))
             {
                 rb.AddForce(-speed * Time.deltaTime, 0, 0);
+            }
+            if (Input.GetKey("r"))
+            {
+                text.text = "";
+                active = false;
+                down = false;
             }
             if (Input.GetKey("space"))
             {
@@ -92,30 +103,25 @@ public class Controller : MonoBehaviour
         }
         else
         {
-            if (size < 20 && !down)
+            if (visiblilty < 1.5 && !down)
             {
-                size += sizeSpeed;
-            } else if(size>0)
+                visiblilty += change;
+            } else if(visiblilty>0)
             {
+                visiblilty -= change;
                 down = true;
-                size -= sizeSpeed;
-                if(finished)
-                {
-                    currentLevel++;
-                    finished = false;
-                }
                 if(started)
                 {
                     started = false;
                     nextLevel.Play();
+                    currentLevel++;
                 }
                 level.BuildLevel(currentLevel);
             } else
             {
                 active = true;
-                size = 0;
             }
-            quad.localScale = new Vector3(size, size, 0);
+            quad.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, visiblilty);
         }
     }
     private void OnCollisionStay(Collision collision)
@@ -124,7 +130,7 @@ public class Controller : MonoBehaviour
         {
             jumps = 1;
         }
-        if(collision.collider.tag == "Switch")
+        if(collision.collider.tag == "Switch" && !collided)
         {
             rotateTo = collision.collider.GetComponentInParent<RotationManagement>().rotation;
             collided = true;
@@ -144,20 +150,38 @@ public class Controller : MonoBehaviour
 
         if (collision.collider.tag == "Finish")
         {
-            if (currentLevel == 10)
+            if (currentLevel >= 15)
             {
                 shift.enabled = false;
                 rainbow.enabled = true;
-                text.text = "You have won your colors!";
+                text.text = "You have won your colors! " +
+                    "Press r to start again!";
+                currentLevel = 1;
                 win.Play();
             }
             else
             {
                 started = true;
-                finished = true;
                 active = false;
                 down = false;
                 nextLevel.Play();
+            }
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Orb")
+        {
+            if (other.GetComponent<FloatingOrb>() != null)
+            {
+                other.GetComponent<FloatingOrb>().collected = true;
+            } else if (other.GetComponent<WhiteOrb>() != null)
+            {
+                other.GetComponent<WhiteOrb>().collected = true;
+            } else
+            {
+                other.GetComponent<BlackOrb>().collected = true;
+                other.GetComponent<BlackOrb>().started = true;
             }
         }
     }

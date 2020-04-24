@@ -19,17 +19,20 @@ public class WhiteOrb : MonoBehaviour
             y = transform.position.y - player.position.y;
             transform.position = new Vector3(transform.position.x - x / speed, transform.position.y - y / speed, 0);
         }
-        else
-        {
-            collide.enabled = true;
-        }
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        if(collision.collider.tag == "Player")
+        if(collected && collider.name == "Glass")
         {
-            collected = true;
-            collide.enabled = false;
+            foreach(Transform child in collider.transform)
+            {
+                if (child.name != "Streaks")
+                {
+                    child.gameObject.SetActive(true);
+                    child.GetComponent<SeparatingOrb>().Separate(transform);
+                }
+            }
+            gameObject.SetActive(false);
         }
     }
 }

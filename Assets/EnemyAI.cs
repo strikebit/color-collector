@@ -25,9 +25,9 @@ public class EnemyAI : MonoBehaviour
             jumpable = false;
         }
     }
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionStay(Collision collision)
     {
-        if(collision.collider.tag == "Floor")
+        if(collision.collider.tag == "Floor" && collision.collider.transform.position.y < transform.position.y)
         {
             jumpable = true;
         }

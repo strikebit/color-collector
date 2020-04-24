@@ -12,6 +12,11 @@ public class LevelBuilder : MonoBehaviour
     public GameObject level8;
     public GameObject level9;
     public GameObject level10;
+    public GameObject level11;
+    public GameObject level12;
+    public GameObject level13;
+    public GameObject level14;
+    public GameObject level15;
     void Start()
     {
         level1.SetActive(true);
@@ -24,12 +29,19 @@ public class LevelBuilder : MonoBehaviour
         level8.SetActive(false);
         level9.SetActive(false);
         level10.SetActive(false);
+        level11.SetActive(false);
+        level12.SetActive(false);
+        level13.SetActive(false);
+        level14.SetActive(false);
+        level15.SetActive(false);
     }
     public void BuildLevel(int level)
     {
+        GameObject.Find("BackGround").GetComponent<ColorShift>().white = true;
         player.StartPos();
         if (level == 1)
         {
+            level15.SetActive(false);
             level1.SetActive(true);
             foreach (Transform child in level1.transform)
             {
@@ -86,6 +98,7 @@ public class LevelBuilder : MonoBehaviour
         {
             level6.SetActive(false);
             level7.SetActive(true);
+            level6.transform.rotation = Quaternion.Euler(0, 0, 0);
             foreach (Transform child in level7.transform)
             {
                 child.GetComponent<StartPosition>().StartPos();
@@ -115,7 +128,156 @@ public class LevelBuilder : MonoBehaviour
             level10.SetActive(true);
             foreach (Transform child in level10.transform)
             {
+                if (child.name == "blackOrb")
+                {
+                    child.GetComponent<BlackOrb>().collected = false;
+                }
                 child.GetComponent<StartPosition>().StartPos();
+            }
+        }
+        if (level == 11)
+        {
+            level10.SetActive(false);
+            level11.SetActive(true);
+            foreach (Transform child in level11.transform)
+            {
+                if (child.name == "blackOrb")
+                {
+                    child.GetComponent<BlackOrb>().collected = false;
+                }
+                child.GetComponent<StartPosition>().StartPos();
+                if (child.name == "Glass")
+                {
+                    foreach(Transform grandChild in child)
+                    {
+                        if (grandChild.name != "Streaks")
+                        {
+                            grandChild.GetComponent<FloatingOrb>().collected = false;
+                            grandChild.gameObject.SetActive(false);
+                        }
+                    }
+                }
+                if (child.name == "WhiteOrb")
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+        if (level == 12)
+        {
+            level11.SetActive(false);
+            level12.SetActive(true);
+            foreach (Transform child in level12.transform)
+            {
+                child.GetComponent<StartPosition>().StartPos();
+                if (child.name == "Glass")
+                {
+                    foreach (Transform grandChild in child)
+                    {
+                        if (grandChild.name != "Streaks")
+                        {
+                            grandChild.GetComponent<FloatingOrb>().collected = false;
+                            grandChild.gameObject.SetActive(false);
+                        }
+                    }
+                }
+                if (child.name == "WhiteOrb")
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+        if (level == 13)
+        {
+            level12.SetActive(false);
+            level13.SetActive(true);
+            foreach (Transform child in level13.transform)
+            {
+                child.GetComponent<StartPosition>().StartPos();
+                if (child.name == "Glass")
+                {
+                    foreach (Transform grandChild in child)
+                    {
+                        if (grandChild.name != "Streaks")
+                        {
+                            grandChild.GetComponent<FloatingOrb>().collected = false;
+                            grandChild.gameObject.SetActive(false);
+                        }
+                    }
+                }
+                if (child.name == "WhiteOrb")
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+        if (level == 14)
+        {
+            level13.SetActive(false);
+            level14.SetActive(true);
+            level14.transform.rotation = Quaternion.Euler(0, 0, 0);
+            foreach (Transform child in level14.transform)
+            {
+                child.GetComponent<StartPosition>().StartPos();
+                if(child.name == "blackOrb")
+                {
+                    child.GetComponent<BlackOrb>().collected = false;
+                }
+                if (child.name == "Glass")
+                {
+                    foreach (Transform grandChild in child)
+                    {
+                        if (grandChild.name != "Streaks")
+                        {
+                            grandChild.GetComponent<FloatingOrb>().collected = false;
+                            grandChild.gameObject.SetActive(false);
+                        }
+                    }
+                }
+                if (child.name == "WhiteOrb")
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+        if (level == 15)
+        {
+            level14.SetActive(false);
+            level15.SetActive(true);
+            foreach (Transform child in level15.transform)
+            {
+                child.GetComponent<StartPosition>().StartPos();
+                if (child.tag == "Orb")
+                {
+                    child.GetComponent<MeshRenderer>().enabled = true;
+                    child.GetComponent<Collider>().enabled = true;
+                    foreach (Transform grandChild in child)
+                    {
+                        if (grandChild.name == "Particle System")
+                        {
+                            grandChild.GetComponent<ParticleSystem>().Play();
+                        }
+                        else
+                        {
+                            grandChild.GetComponent<Light>().intensity = 3;
+                        }
+                    }
+                }
+                if (child.name == "Glass")
+                {
+                    foreach (Transform grandChild in child)
+                    {
+                        if (grandChild.name != "Streaks")
+                        {
+                            grandChild.GetComponent<FloatingOrb>().collected = false;
+                            grandChild.gameObject.SetActive(false);
+                        }
+                    }
+                }
+                if (child.name == "WhiteOrb")
+                {
+                    child.gameObject.SetActive(true);
+                }
             }
         }
     }

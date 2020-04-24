@@ -9,6 +9,7 @@ public class FloatingOrb : MonoBehaviour
     public AudioSource collect;
     private float x;
     private float y;
+    private bool first;
     void Start()
     {
         collide = GetComponent<SphereCollider>();
@@ -18,6 +19,12 @@ public class FloatingOrb : MonoBehaviour
     {
         if(collected)
         {
+            if(first)
+            {
+                first = false;
+                collect.Play();
+                whiteOrb.collected = false;
+            }
             if(whiteOrb.collected)
             {
                 collected = false;
@@ -27,17 +34,7 @@ public class FloatingOrb : MonoBehaviour
             transform.position = new Vector3(transform.position.x - x/speed, transform.position.y - y/speed, 0);
         } else
         {
-            collide.enabled = true;
-        }
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.collider.tag == "Player")
-        {
-            collide.enabled = false;
-            collected = true;
-            whiteOrb.collected = false;
-            collect.Play();
+            first = true;
         }
     }
 }

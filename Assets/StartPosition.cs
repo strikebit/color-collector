@@ -17,5 +17,13 @@ public class StartPosition : MonoBehaviour
         {
             GetComponent<FloatingOrb>().collected = false;
         }
+        foreach(Transform child in transform)
+        {
+            if (child.GetComponent<MeshRenderer>() != null)
+            {
+                child.GetComponent<MeshRenderer>().enabled = true;
+                child.GetComponent<Collider>().enabled = true;
+            }
+        }
     }
 }
